@@ -8,7 +8,14 @@ namespace Economie25_101.ClassesUtilitaires
 {
     internal class MenuItem
     {
-        public char Cle {  get; set; }  
-        public MenuItem() { }   
+        public char Cle {  get; set; }
+        public string Item {  get; set; }   
+        public Action Execution { get; set; }
+        public MenuItem(char c, string i, Action exec) 
+        {
+            Cle = c;
+            Item= i;
+            Execution = exec;   
+        }   
     }
 }

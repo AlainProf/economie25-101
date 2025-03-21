@@ -40,5 +40,11 @@ namespace Economie25_101
             Console.Clear();
             Console.WriteLine("\x1b[3J");
         }
+
+        public static void P()
+        {
+            WL("Appuyez sur une touche...");
+            Console.ReadKey(true);
+        }
     }
 }

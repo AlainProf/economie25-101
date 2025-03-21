@@ -18,7 +18,7 @@ namespace Economie25_101.ClassesUtilitaires
 
         public void AjouterOption(MenuItem o)
         {
-            _options.Add(o);    
+            _options.Add(o);
         }
 
         public void Afficher()
@@ -26,7 +26,25 @@ namespace Economie25_101.ClassesUtilitaires
             U.Titre(_nom);
             foreach (MenuItem o in _options)
             {
-                U.WL("\t" + o.Cle);
+                U.WL("\t" + o.Cle + ": " + o.Item);
+            }
+            U.WL("\n\nEsc pour quitter");
+        }
+
+        public void SaisirOption()
+        {
+            ConsoleKeyInfo cle;
+            while ( (cle=Console.ReadKey(true)).Key != ConsoleKey.Escape)
+            {
+                foreach(MenuItem option in _options)
+                {
+                    if ((char)cle.Key == option.Cle)
+                    {
+                        U.CLS();
+                        option.Execution();
+                    }
+                }
+                Afficher();
             }
         }
     }

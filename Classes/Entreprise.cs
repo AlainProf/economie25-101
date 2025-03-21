@@ -11,14 +11,17 @@ namespace Economie25_101.Classes
         public int Id { get; set; } 
         public string RaisonSociale {  get; set; }
         
-        public string Domaine {  get; set; }    
+        public string Domaine {  get; set; }
+        
+        public string AnneeFondation {  get; set; } 
         public List<Employe> Personnel { get; set;} 
 
-        public Entreprise(int i, string rs, string d)
+        public Entreprise(int i =0, string rs = "inconnu", string d = "inconnu", string af="1608" )
         {
             Id = i;
             RaisonSociale = rs; 
             Domaine = d;  
+            AnneeFondation = af;    
             
             Personnel = new List<Employe>();    
         }
