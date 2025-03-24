@@ -14,14 +14,13 @@ namespace Economie25_101.ClassesUtilitaires
         public static void ChargerEntreprises()
         {
             U.Titre("Chargement des entreprises en mémoires");
-            string FICHIER_ENTREPRISE = @"d:\alino\atelier\economie\entreprises.csv";
             if (Program.Producteurs == null)
             {
                 return;
             }
-            if (File.Exists(FICHIER_ENTREPRISE))
+            if (File.Exists(U.FICHIER_ENTREPRISE))
             {
-                StreamReader? reader = new StreamReader(FICHIER_ENTREPRISE);
+                StreamReader? reader = new StreamReader(U.FICHIER_ENTREPRISE);
                 string? ligneCourante;
                 int iter = 0;
                 while (reader.Peek() > -1)
@@ -44,7 +43,7 @@ namespace Economie25_101.ClassesUtilitaires
             }
             else
             {
-                Console.WriteLine($"Erreur: le fichier {FICHIER_ENTREPRISE} n'existe pas");
+                Console.WriteLine($"Erreur: le fichier {U.FICHIER_ENTREPRISE} n'existe pas");
             }
             U.P();
         }
@@ -59,7 +58,7 @@ namespace Economie25_101.ClassesUtilitaires
 
             int iter = 0;
             int nbChamps = CompterChamps(infoBrute);
-
+            // Entreprises générale ont 4 champs
             if (nbChamps == 4)
             {
                 iter++;
@@ -78,6 +77,8 @@ namespace Economie25_101.ClassesUtilitaires
                 }
                 msgErr = "Nombre de champs incorrect";
             }
+
+            // Entrerpiaes publiques ont 6 champs
             if (nbChamps == 6)
             {
                 iter++;
@@ -88,9 +89,9 @@ namespace Economie25_101.ClassesUtilitaires
                                       int.Parse(tabInfo[0]),
                                       tabInfo[1],
                                       tabInfo[2],
-                                      tabInfo[3],
-                                      double.Parse(tabInfo[4]),
-                                      long.Parse(tabInfo[5]));
+                                      tabInfo[5],
+                                      double.Parse(tabInfo[3]),
+                                      long.Parse(tabInfo[4]));
                     return true;
                 }
                 else

@@ -14,21 +14,37 @@ namespace Economie25_101.Classes
         public string Domaine {  get; set; }
         
         public string AnneeFondation {  get; set; } 
-        public List<Employe> Personnel { get; set;} 
+        public List<Employe> Personnel { get; set;}
 
-        public Entreprise(int i =0, string rs = "inconnu", string d = "inconnu", string af="1608" )
+        static int _idMax = 0;  
+
+        public Entreprise(int i=0, string rs= "", string d="", string af="")
         {
             Id = i;
-            RaisonSociale = rs; 
-            Domaine = d;  
-            AnneeFondation = af;    
-            
-            Personnel = new List<Employe>();    
+            if (Id > _idMax)
+            {
+                _idMax = Id;
+            }
+            RaisonSociale = rs;
+            Domaine = d;
+            AnneeFondation = af;
+
+            Personnel = new List<Employe>();
         }
-        
+        public Entreprise(string rs, string d, string af)
+        {
+            _idMax++;
+            Id = _idMax;
+            RaisonSociale = rs;
+            Domaine = d;
+            AnneeFondation = af;
+
+            Personnel = new List<Employe>();
+        }
+
         public void Afficher()
         {
-            U.WL($"{RaisonSociale}, entreprise de {Domaine} qui emploie {Personnel.Count} travailleurs");
+            U.WL($"{Id.ToString().PadLeft(5)} {RaisonSociale.PadRight(40)}{Domaine.PadRight(20)}{AnneeFondation.PadLeft(5)}");
         }
     }
 }

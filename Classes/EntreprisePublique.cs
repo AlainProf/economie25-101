@@ -11,7 +11,8 @@ namespace Economie25_101.Classes
         public double ValUnitaire {  get; set; }    
         public long NbActions {  get; set; } 
 
-        public EntreprisePublique(int id, string rs, string d, string af, double valU, long nbA ): base(id,rs,d,af)        {
+        public EntreprisePublique(int id, string rs, string d, string af, double valU, long nbA ):
+            base(id,rs,d,af)        {
             ValUnitaire = valU;
             NbActions = nbA;
         }
