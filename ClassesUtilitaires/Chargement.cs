@@ -102,28 +102,42 @@ namespace Economie25_101.ClassesUtilitaires
             }
             return false;
         }
-        
-            //------------------------------------------
-            //
-            //------------------------------------------
-     private static int CompterChamps(string info)
-     {
-                if (info.Length == 0)
-                    return 0;
 
-                int nbChamps = 1;
-                foreach (char ch in info)
-                {
-                    if (ch == ';')
-                        nbChamps++;
-                }
-                return nbChamps;
+        //------------------------------------------
+        //
+        //------------------------------------------
+        private static int CompterChamps(string info)
+        {
+            if (info.Length == 0)
+                return 0;
+
+            int nbChamps = 1;
+            foreach (char ch in info)
+            {
+                if (ch == ';')
+                    nbChamps++;
+            }
+            return nbChamps;
         }
 
         private static bool ValiderEntreprise(string[] tabInfo, out string errValidation)
         {
             errValidation = "";
-            return true;    
+            return true;
+        }
+
+        public static void ViderListeEntreprises()
+        {
+            U.Titre("Vidage de la liste mémoire des entreprises...");
+            if (Program.Producteurs is not null && Program.Producteurs.Count > 0)
+            {
+                Program.Producteurs.Clear();
+                U.P("La liste est maintenant vide");
+            }
+            else
+            {
+                U.P("La liste était déjà vide...");
+            }
         }
     }
 }

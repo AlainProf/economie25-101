@@ -42,9 +42,18 @@ namespace Economie25_101.Classes
             Personnel = new List<Employe>();
         }
 
-        public void Afficher()
+        public void Afficher(bool tabulaire = true )
         {
-            U.WL($"{Id.ToString().PadLeft(5)} {RaisonSociale.PadRight(40)}{Domaine.PadRight(20)}{AnneeFondation.PadLeft(5)}");
+            if (tabulaire)
+            {
+                U.WL($"{Id.ToString().PadLeft(5)} {RaisonSociale.PadRight(40)}{Domaine.PadRight(20)}{AnneeFondation.PadLeft(5)}");
+            }
+            else
+            {
+                U.WL($"Raison sociale:\t{RaisonSociale}");
+                U.WL($"Secteur :\t{Domaine}");
+                U.WL($"Fondée en :\t{AnneeFondation}");
+            }
         }
     }
 }

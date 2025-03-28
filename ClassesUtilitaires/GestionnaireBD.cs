@@ -19,7 +19,18 @@ namespace Economie25_101.ClassesUtilitaires
             }
             foreach(Entreprise e in Program.Producteurs)
             {
-                sw.WriteLine($"{e.Id};{e.RaisonSociale};{e.Domaine};{e.AnneeFondation}");
+                if (e is EntreprisePublique)
+                {
+                    EntreprisePublique? ep = e as EntreprisePublique;
+                    if (ep != null)
+                    {
+                        sw.WriteLine($"{ep.Id};{ep.RaisonSociale};{ep.Domaine};{ep.ValUnitaire};{ep.NbActions};{e.AnneeFondation}");
+                    }
+                }
+                else
+                {
+                    sw.WriteLine($"{e.Id};{e.RaisonSociale};{e.Domaine};{e.AnneeFondation}");
+                }
             }
             sw.Close();
             U.P($"{Program.Producteurs.Count} entreprise sauvegardées en BD");

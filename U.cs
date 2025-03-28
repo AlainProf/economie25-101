@@ -8,11 +8,12 @@ namespace Economie25_101
 {
     internal class U
     {
-        public const string FICHIER_ENTREPRISE = @"d:\alino\atelier\economie\entreprises.csv";
+        public const string FICHIER_ENTREPRISE = @"d:\alino\atelier\economie\entreprises.txt";
         public static Random rdm = new Random();
-        public static void Titre(string texte)
+        public static void Titre(string texte, bool viderEcran = true)
         {
-            CLS();
+            if (viderEcran)
+                CLS();
             foreach (char c in texte)
             {
                 W("-");
@@ -25,10 +26,22 @@ namespace Economie25_101
             WL("\n");
         }
         
-        public static void WL(string texte)
+        public static void WL(string texte = "")
         {
             Console.WriteLine(texte);   
         }
+
+        public static void Sep(string texte = "")
+        {
+            WL(texte);
+            foreach (char c in texte)
+            {
+                W("-");
+            }
+            WL("\n");
+        }
+
+    
 
         public static void W(string texte)
         {
@@ -54,6 +67,12 @@ namespace Economie25_101
         public static string? RL()
         {
             return Console.ReadLine();
+        }
+        public static char RC()
+        {
+            ConsoleKeyInfo cle;
+            cle = Console.ReadKey(true);
+            return cle.KeyChar;
         }
     }
 }

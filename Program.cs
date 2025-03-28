@@ -13,11 +13,13 @@ namespace Economie25_101
             Menu mp = new("Menu principal");
 
             mp.AjouterOption(new('C', "Charger entreprises", Chargement.ChargerEntreprises));
+            mp.AjouterOption(new('S', "Vider liste entreprises en mémoire", Chargement.ViderListeEntreprises));
             mp.AjouterOption(new('A', "Afficher entreprises", AfficherEntreprises));
             mp.AjouterOption(new('V', "Valeurs en bourse ", AfficherValeursBoursieres));
             mp.AjouterOption(new('T', "Valeurs en bourse triées", AfficherValeursBoursieresTriees));
             mp.AjouterOption(new('P', "PNB du Québec ", CalculerPNB));
             mp.AjouterOption(new('I', "inserer entreprise ", Formulaire.NouvelleEntreprise));
+            mp.AjouterOption(new('M', "Modifier entreprise ", Formulaire.ModifierEntreprise));
             mp.AjouterOption(new('D', "Décharger liste en BD", GestionnaireBD.DechargerListeEntreprises));
 
             mp.Afficher();

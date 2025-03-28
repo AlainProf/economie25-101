@@ -21,9 +21,9 @@ namespace Economie25_101.ClassesUtilitaires
             _options.Add(o);
         }
 
-        public void Afficher()
+        public void Afficher(bool viderEcran = true)
         {
-            U.Titre(_nom);
+            U.Titre(_nom, viderEcran);
             foreach (MenuItem o in _options)
             {
                 U.WL("\t" + o.Cle + ": " + o.Item);
