@@ -6,13 +6,24 @@ using System.Threading.Tasks;
 
 namespace Economie25_101.Classes
 {
-    internal class EmpHoraire
+    internal class EmpHoraire : Employe
     {
-        public double tauxHoraire;
+        public double TauxHoraire { get; set; } 
 
         public EmpHoraire()
         {
-            tauxHoraire = 15.75;
+            TauxHoraire = 15.75;
+        }
+        //[0] idEmp; [1] idEntrep ; [2] Nom [3] Genre; [4] naissance [5] 55,77
+        public EmpHoraire(int id, int idEntrep, string n, string g, DateTime nais, double th ):
+            base(id, idEntrep, n, g, nais)
+        {
+            TauxHoraire = th;
+        }
+
+        public override void Afficher()
+        {
+            U.WL($"{Nom} {TauxHoraire}");
         }
     }
 }

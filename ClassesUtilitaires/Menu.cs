@@ -10,10 +10,13 @@ namespace Economie25_101.ClassesUtilitaires
     {
         string _nom;
         List<MenuItem> _options;
+        bool _top = true;
 
-        public Menu(string n) {
+        public Menu(string n, bool top=true)
+        {
             _nom = n;
             _options = new List<MenuItem>();
+            _top = top;
         }
 
         public void AjouterOption(MenuItem o)
@@ -23,16 +26,20 @@ namespace Economie25_101.ClassesUtilitaires
 
         public void Afficher(bool viderEcran = true)
         {
-            U.Titre(_nom, viderEcran);
+            U.Titre(_nom, _top);
             foreach (MenuItem o in _options)
             {
                 U.WL("\t" + o.Cle + ": " + o.Item);
             }
-            U.WL("\n\nEsc pour quitter");
+            if (_top)
+            {
+                U.WL("\n\nEsc pour quitter");
+            }
         }
 
         public void SaisirOption()
         {
+            Afficher();
             ConsoleKeyInfo cle;
             while ( (cle=Console.ReadKey(true)).Key != ConsoleKey.Escape)
             {
@@ -40,11 +47,15 @@ namespace Economie25_101.ClassesUtilitaires
                 {
                     if ((char)cle.Key == option.Cle)
                     {
-                        U.CLS();
+                        if (_top)
+                          U.CLS();
                         option.Execution();
+                        if (_top)
+                          Afficher();
                     }
                 }
-                Afficher();
+                if (!_top)
+                    break;
             }
         }
     }

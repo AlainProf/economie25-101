@@ -7,14 +7,17 @@ namespace Economie25_101
     internal class Program
     {
         static public List<Entreprise>? Producteurs { get; set; } = new List<Entreprise>();
+        static public List<Employe>? Travailleurs { get; set; } = new();
         static void Main(string[] args)
         {
             U.Titre("Analyse de l'économie québécoise!");
             Menu mp = new("Menu principal");
 
             mp.AjouterOption(new('C', "Charger entreprises", Chargement.ChargerEntreprises));
+            mp.AjouterOption(new('E', "Charger Employés ", Chargement.ChargerEmployes));
             mp.AjouterOption(new('S', "Vider liste entreprises en mémoire", Chargement.ViderListeEntreprises));
             mp.AjouterOption(new('A', "Afficher entreprises", AfficherEntreprises));
+            mp.AjouterOption(new('U', "Afficher une entreprise", AfficherUneEntreprise));
             mp.AjouterOption(new('V', "Valeurs en bourse ", AfficherValeursBoursieres));
             mp.AjouterOption(new('T', "Valeurs en bourse triées", AfficherValeursBoursieresTriees));
             mp.AjouterOption(new('P', "PNB du Québec ", CalculerPNB));
@@ -22,7 +25,6 @@ namespace Economie25_101
             mp.AjouterOption(new('M', "Modifier entreprise ", Formulaire.ModifierEntreprise));
             mp.AjouterOption(new('D', "Décharger liste en BD", GestionnaireBD.DechargerListeEntreprises));
 
-            mp.Afficher();
             mp.SaisirOption();
 
             /*Entreprise e1 = new Entreprise(1, "Gildan", "textiles");
@@ -48,7 +50,31 @@ namespace Economie25_101
             U.P();
         }
 
-        
+        static void AfficherUneEntreprise()
+        {
+            U.Titre("Info pour une entreprise");
+            string? idEntrepStr;
+            int idEntrep;
+
+            U.W("ID:");
+            idEntrepStr = U.RL();
+
+            if (idEntrepStr is not null)
+            {
+                idEntrep = int.Parse(idEntrepStr);
+                foreach(Entreprise e in Producteurs)
+                {
+                    if (e.Id == idEntrep)
+                    {
+                        e.Afficher(false);
+                    }
+                }
+            }
+            U.P() ;
+        }
+
+
+
         static void AfficherValeursBoursieresTriees()
         {
             U.Titre("Valeurs boursières triées");

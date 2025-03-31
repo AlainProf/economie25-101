@@ -103,6 +103,103 @@ namespace Economie25_101.ClassesUtilitaires
             return false;
         }
 
+
+
+
+        public static void ChargerEmployes()
+        {
+            U.Titre("Chargement des travailleurs en mémoires");
+            if (Program.Travailleurs == null)
+            {
+                return;
+            }
+            if (File.Exists(U.FICHIER_EMPLOYES))
+            {
+                StreamReader? reader = new StreamReader(U.FICHIER_EMPLOYES);
+                string? ligneCourante;
+                int iter = 0;
+                while (reader.Peek() > -1)
+                {
+                    iter++;
+                    ligneCourante = reader.ReadLine();
+                    if (ligneCourante == null)
+                        continue;
+                    if (ParsingEmploye(ligneCourante, out Employe e, out string msgErr))
+                    {
+                        Program.Travailleurs.Add(e);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Erreur à la ligne {iter}: {msgErr} ");
+                    }
+                }
+                reader.Close();
+                U.P($"Chargement de {Program.Travailleurs.Count} travailleurs");
+
+                U.W("Voulez vous vnetiler les employés dans leurs entreprises respectives? (o/n)");
+                char rep = U.RC();
+                if (rep == 'o')
+                {
+                    VentilationDesEmployes();
+                }
+            }
+            else
+            {
+                Console.WriteLine($"Erreur: le fichier {U.FICHIER_EMPLOYES} n'existe pas");
+            }
+        }
+
+        private static bool ParsingEmploye(string infoBrute, out Employe e, out string msgErr)
+        {
+            e = new Employe();
+            msgErr = "";
+
+            if (infoBrute == null)
+                return false;
+
+            int iter = 0;
+            int nbChamps = CompterChamps(infoBrute);
+       
+
+            if (nbChamps == 6)
+            {
+                iter++;
+                string[] tabInfo = infoBrute.Split(';');
+                if (ValiderEmploye(tabInfo, out string errValidation))
+                {
+                    //[0] idEmp; [1] idEntrep ; [2] Nom [3] Genre; [4] naissance [5] 55,77
+
+                    DateTime nais;
+                    if (DateTime.TryParseExact(tabInfo[4], "yyyy-MM-dd", null,
+                                               System.Globalization.DateTimeStyles.None, out nais))
+                    {
+                        e = new EmpHoraire(int.Parse(tabInfo[0]),
+                                           int.Parse(tabInfo[1]),
+                                           tabInfo[2],
+                                           tabInfo[3],
+                                           nais,
+                                           double.Parse(tabInfo[5]));
+                        return true;
+                    }
+                    return false;
+                }
+                else
+                {
+                    msgErr = $"Information corrompue: {errValidation}";
+                }
+                msgErr = "Nombre de champs incorrect";
+            }
+            return false;
+        }
+
+
+
+
+
+
+
+
+
         //------------------------------------------
         //
         //------------------------------------------
@@ -125,6 +222,11 @@ namespace Economie25_101.ClassesUtilitaires
             errValidation = "";
             return true;
         }
+        private static bool ValiderEmploye(string[] tabInfo, out string errValidation)
+        {
+            errValidation = "";
+            return true;
+        }
 
         public static void ViderListeEntreprises()
         {
@@ -137,6 +239,17 @@ namespace Economie25_101.ClassesUtilitaires
             else
             {
                 U.P("La liste était déjà vide...");
+            }
+        }
+
+        static void VentilationDesEmployes()
+        {
+            if (Program.Producteurs is not null)
+            {
+                foreach (Entreprise e in Program.Producteurs)
+                {
+                    e.VentilerPersonnel();
+                }
             }
         }
     }

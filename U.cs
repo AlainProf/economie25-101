@@ -9,6 +9,7 @@ namespace Economie25_101
     internal class U
     {
         public const string FICHIER_ENTREPRISE = @"d:\alino\atelier\economie\entreprises.txt";
+        public const string FICHIER_EMPLOYES   = @"d:\alino\atelier\economie\employes.txt";
         public static Random rdm = new Random();
         public static void Titre(string texte, bool viderEcran = true)
         {

@@ -90,20 +90,28 @@ namespace Economie25_101.ClassesUtilitaires
 
             if (idEntrepAMod != null)
             {
-                int idEAMod = int.Parse(idEntrepAMod);
-                Entreprise? entrepAMod = TrouverEntreprise(idEAMod);
-
-                if (entrepAMod != null)
+                if (idEntrepAMod.Length > 0)
                 {
-                    eTmp = entrepAMod;  
-                    eTmp.Afficher(false);
-                    FormulaireModificationEntreprise(eTmp);
+                    int idEAMod = int.Parse(idEntrepAMod);
+                    Entreprise? entrepAMod = TrouverEntreprise(idEAMod);
+
+                    if (entrepAMod != null)
+                    {
+                        eTmp = entrepAMod;
+                        eTmp.Afficher(false);
+                        FormulaireModificationEntreprise(eTmp);
+                    }
                 }
-
-
-
-                U.P("Informations bien modifiées");
+                else
+                {
+                    U.P($"Erreur l'id d'entreprise ({idEntrepAMod}) n'existe pas ");
+                }
             }
+            else
+            {
+                U.P($"Erreur l'id d'entreprise foruni est nul ");
+            }
+        }
 
             static Entreprise? TrouverEntreprise(int id)
             {
@@ -129,18 +137,14 @@ namespace Economie25_101.ClassesUtilitaires
             {
                 //U.Titre($"Modification de {e.RaisonSociale}");
 
-                Menu mFME = new("Quel champs voulez vous modifier:");
+                Menu mFME = new("Quel champs voulez vous modifier:", false);
 
                 mFME.AjouterOption(new('1', "raison sociale", ModifierRS));
                 mFME.AjouterOption(new('2', "secteur", ModifierDom));
                 mFME.AjouterOption(new('3', "année de fondation", ModifierAF));
                 mFME.AjouterOption(new('q', "Modifications complétées", Quitter));
 
-                mFME.Afficher(false);
                 mFME.SaisirOption();
-
-                ModifierEntreprise();
-
             }
 
 
@@ -155,81 +159,43 @@ namespace Economie25_101.ClassesUtilitaires
                 else
                 {
                     eTmp.RaisonSociale = rs;
+                    U.P("Raison sociale bien modifiée");
                 }
             }
 
             static void ModifierDom()
             {
-
                 U.W("Secteur:");
                 string? dom = U.RL();
                 if (dom == null)
                 {
                     dom = "";
                 }
+                else
+                {
+                    eTmp.Domaine = dom;
+                   U.P("Secteur d'activité bien modifiée");
+                }
             }
-            static void ModifierAF()
-            {
+
+        static void ModifierAF()
+        {
                 U.W("Fondée en :");
                 string? af = U.RL();
                 if (af == null)
                 {
                     af = "";
                 }
-            }
+                else
+                {
+                    eTmp.AnneeFondation = af;
+                    U.P("Année de fondation bien modifiée");
+                }
+          }
+
             static void Quitter()
             {
-                U.Sep("Sauvegarde des modif:");
-                eTmp.Afficher(false);
-                U.P();
             }
-
-            /*  U.W("S'agit-il d'une entreprise côtée en bourse? (O/N)");
-              char rep = U.RC();
-
-              while (rep != 'O' && rep != 'o' && rep != 'N' && rep != 'n')
-              {
-                  rep = U.RC();
-              }
-              U.WL();
-              if (rep == 'o' || rep == 'O')
-              {
-                  U.W("Valeur de l'action :");
-                  string? va = U.RL();
-
-                  double valAct = 0;
-                  if (va != null)
-                  {
-                      valAct = double.Parse(va);
-                  }
-
-
-                  U.W("Nombre d'actions:");
-                  string? na = U.RL();
-                  int nbrAct = 0;
-                  if (na != null)
-                  {
-                      nbrAct = int.Parse(na);
-                  }
-                  EntreprisePublique ep = new(rs, dom, valAct, nbrAct, af);
-                  if (Program.Producteurs is not null)
-                  {
-                      Program.Producteurs.Add(ep);
-                  }
-                  U.P($"{ep.RaisonSociale} a bien été ajouté en mémoire");
-
-              }
-              else
-              {
-                  Entreprise e = new(rs, dom, af);
-                  if (Program.Producteurs is not null)
-                  {
-                      Program.Producteurs.Add(e);
-                  }
-                  U.P($"{e.RaisonSociale} a bien été ajouté en mémoire");
-              }*/
-
         }
-
-    }
+    
 }

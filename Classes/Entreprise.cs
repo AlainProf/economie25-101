@@ -50,9 +50,32 @@ namespace Economie25_101.Classes
             }
             else
             {
-                U.WL($"Raison sociale:\t{RaisonSociale}");
-                U.WL($"Secteur :\t{Domaine}");
-                U.WL($"Fondée en :\t{AnneeFondation}");
+                U.WL($"Raison sociale   :\t{RaisonSociale}");
+                U.WL($"Secteur          :\t{Domaine}");
+                U.WL($"Fondée en        :\t{AnneeFondation}");
+                U.WL($"Nombre d'employés: \t{Personnel.Count}");
+
+                U.W("Voulez la liste des employés?(o/n)");
+                char rep = U.RC();
+                if (rep == 'o')
+                {
+                    foreach(Employe e in Personnel)
+                    {
+                        e.Afficher();   
+                    }
+                }
+            }
+        }
+
+        public void VentilerPersonnel()
+        {
+            if (Program.Travailleurs is not null)
+            {
+                foreach (Employe employe in Program.Travailleurs)
+                {
+                    if (employe.IdEntreprise == Id)
+                        Personnel.Add(employe);
+                }
             }
         }
     }
