@@ -3,6 +3,7 @@ using Economie25_101.Classes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using static System.Runtime.InteropServices.Marshalling.IIUnknownCacheStrategy;
@@ -45,7 +46,7 @@ namespace Economie25_101.ClassesUtilitaires
             {
                 Console.WriteLine($"Erreur: le fichier {U.FICHIER_ENTREPRISE} n'existe pas");
             }
-            U.P();
+            //U.P();
         }
 
         private static bool ParsingEntreprise(string infoBrute, out Entreprise e, out string msgErr)
@@ -134,20 +135,86 @@ namespace Economie25_101.ClassesUtilitaires
                     }
                 }
                 reader.Close();
-                U.P($"Chargement de {Program.Travailleurs.Count} travailleurs");
+                //U.P($"Chargement de {Program.Travailleurs.Count} travailleurs");
 
-                U.W("Voulez vous vnetiler les employés dans leurs entreprises respectives? (o/n)");
-                char rep = U.RC();
-                if (rep == 'o')
-                {
+                //U.W("Voulez vous vnetiler les employés dans leurs entreprises respectives? (o/n)");
+                //char rep = U.RC();
+                //if (rep == 'o')
+                //{
                     VentilationDesEmployes();
-                }
+                //}
             }
             else
             {
                 Console.WriteLine($"Erreur: le fichier {U.FICHIER_EMPLOYES} n'existe pas");
             }
         }
+
+        public static void ChargerFeuillesTemps()
+        {
+            U.Titre("Chargement des feuilles de temps");
+            if (File.Exists(U.FICHIER_FEUILLESTEMPS))
+            {
+                StreamReader? reader = new StreamReader(U.FICHIER_FEUILLESTEMPS);
+                string? ligneCourante;
+                int iter = 0;
+                while (reader.Peek() > -1)
+                {
+                    iter++;
+                    ligneCourante = reader.ReadLine();
+                    if (ligneCourante == null)
+                        continue;
+                    if (ParsingFeuilleTemps(ligneCourante, out FeuilleTemps ft, out string msgErr))
+                    {
+                        if (Program.Horodateurs is not null)
+                           Program.Horodateurs.Add(ft);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Erreur à la ligne {iter}: {msgErr} ");
+                    }
+                }
+                reader.Close();
+                if (Program.Horodateurs != null)    
+                   U.P($"Chargement de {Program.Horodateurs.Count} feuille de temps");
+            }
+        }
+
+        
+        private static bool ParsingFeuilleTemps(string infoBrute, out FeuilleTemps ft, out string msgErr)
+        {
+            ft  = new FeuilleTemps();
+            msgErr = "";
+
+            if (infoBrute == null)
+                return false;
+
+            int iter = 0;
+            int nbChamps = CompterChamps(infoBrute);
+
+
+            if (nbChamps == 4)
+            {
+                iter++;
+                string[] tabInfo = infoBrute.Split(';');
+                if (ValiderFDT(tabInfo, out string errValidation))
+                {
+                    ft = new FeuilleTemps(int.Parse(tabInfo[0]),
+                                          int.Parse(tabInfo[1]),
+                                          int.Parse(tabInfo[2]),
+                                          int.Parse(tabInfo[3]));
+                        return true;
+                }
+                else
+                {
+                    msgErr = $"Information corrompue: {errValidation}";
+                }
+                msgErr = "Nombre de champs incorrect";
+            }
+            return false;
+        }
+
+
 
         private static bool ParsingEmploye(string infoBrute, out Employe e, out string msgErr)
         {
@@ -223,6 +290,11 @@ namespace Economie25_101.ClassesUtilitaires
             return true;
         }
         private static bool ValiderEmploye(string[] tabInfo, out string errValidation)
+        {
+            errValidation = "";
+            return true;
+        }
+        private static bool ValiderFDT(string[] tabInfo, out string errValidation)
         {
             errValidation = "";
             return true;

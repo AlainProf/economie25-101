@@ -46,7 +46,7 @@ namespace Economie25_101.Classes
         {
             if (tabulaire)
             {
-                U.WL($"{Id.ToString().PadLeft(5)} {RaisonSociale.PadRight(40)}{Domaine.PadRight(20)}{AnneeFondation.PadLeft(5)}");
+                U.WL($"{Id.ToString().PadLeft(5)} {RaisonSociale.PadRight(40)}{Domaine.PadRight(20)}{AnneeFondation.PadLeft(7)}{Personnel.Count.ToString().PadLeft(7)}");
             }
             else
             {

@@ -8,13 +8,19 @@ namespace Economie25_101
     {
         static public List<Entreprise>? Producteurs { get; set; } = new List<Entreprise>();
         static public List<Employe>? Travailleurs { get; set; } = new();
+        static public List<FeuilleTemps>? Horodateurs { get; set; } = new();       
         static void Main(string[] args)
         {
+            Chargement.ChargerEntreprises();
+            Chargement.ChargerEmployes();
+            Chargement.ChargerFeuillesTemps();
+
             U.Titre("Analyse de l'économie québécoise!");
             Menu mp = new("Menu principal");
 
-            mp.AjouterOption(new('C', "Charger entreprises", Chargement.ChargerEntreprises));
-            mp.AjouterOption(new('E', "Charger Employés ", Chargement.ChargerEmployes));
+            //            mp.AjouterOption(new('C', "Charger entreprises", Chargement.ChargerEntreprises));
+            //            mp.AjouterOption(new('E', "Charger Employés ", Chargement.ChargerEmployes));
+            mp.AjouterOption(new('C', "Calculer la Paye pour une entreprise", CalculerLaPaye));
             mp.AjouterOption(new('S', "Vider liste entreprises en mémoire", Chargement.ViderListeEntreprises));
             mp.AjouterOption(new('A', "Afficher entreprises", AfficherEntreprises));
             mp.AjouterOption(new('U', "Afficher une entreprise", AfficherUneEntreprise));
@@ -40,7 +46,7 @@ namespace Economie25_101
                 U.WL("Aucune entreprise n'est chargée en mémoire");
             else
             {
-                U.Titre($"{"Id".PadLeft(5)} {"Raison Sociale".PadRight(40)}{"Secteur".PadRight(20)}{"Fondé en".PadLeft(5)}");
+                U.Titre($"{"Id".PadLeft(5)} {"Raison Sociale".PadRight(40)}{"Secteur".PadRight(20)}{"Fondé en".PadLeft(7)}{"Nb Emplo".PadLeft(7)}");
                 foreach (Entreprise e in Producteurs)
                 {
                     e.Afficher();
@@ -62,11 +68,14 @@ namespace Economie25_101
             if (idEntrepStr is not null)
             {
                 idEntrep = int.Parse(idEntrepStr);
-                foreach(Entreprise e in Producteurs)
+                if (Producteurs is not null)
                 {
-                    if (e.Id == idEntrep)
+                    foreach (Entreprise? e in Producteurs)
                     {
-                        e.Afficher(false);
+                        if (e.Id == idEntrep)
+                        {
+                            e.Afficher(false);
+                        }
                     }
                 }
             }
@@ -141,7 +150,60 @@ namespace Economie25_101
             }
             U.P();
         }
+        static void CalculerLaPaye()
+        {
+            U.Titre("Calcul de la paye");
+            string? idEntrepStr;
+            U.W("Id de l'entreprise:");
+            idEntrepStr = U.RL();
+            int idEntrep = 0;
+            if (idEntrepStr is not null)
+            {
+                idEntrep = int.Parse(idEntrepStr);
+            }
 
+            U.W("numéro de période:");
+            string? idPeriodeStr;
+            idPeriodeStr = U.RL();
+            int periode = 0;
+            if (idPeriodeStr is not null)   
+               periode = int.Parse(idPeriodeStr);
+
+            if (Producteurs is not null)
+            {
+                foreach (Entreprise? e in Producteurs)
+                {
+                    if (e.Id == idEntrep)
+                    {
+                        foreach (Employe emp in e.Personnel)
+                        {
+                            if (Horodateurs is not null)
+                            {
+                                foreach (FeuilleTemps? ft in Horodateurs)
+                                {
+                                    if (ft.Periode == periode)
+                                    {
+                                        if (ft.getIdEmploye() == emp.Id)
+                                        {
+                                            if (emp is EmpHoraire)
+                                            {
+                                                EmpHoraire? empH = emp as EmpHoraire;
+                                                if (empH != null)
+                                                {
+                                                    double paye = empH.TauxHoraire * ft.NbHeures;
+                                                    U.WL($"{empH.Id.ToString().PadLeft(6)} {empH.Nom.PadLeft(40)} {paye.ToString("N2").PadLeft(12)}$");
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+           U.P();
+        }
 
         static void CalculerPNB()
         {
